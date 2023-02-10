@@ -5,8 +5,8 @@ import example
 
 root = Tk()
 root.geometry("200x200")
-#image2 =Image.open(r'C:\Users\sanje\Pictures\ben-sweet-2LowviVHZ-E-unsplash-1.jpeg')
-image1 = tk.PhotoImage(file = r'C:\Users\sanje\Pictures\Figure_2.png')
+#image2 =image2 =Image.open(r'D:\M Tech\SEMESTER3\Project\cropped-ben-sweet-2LowviVHZ-E-unsplash.jpeg')
+image1 = tk.PhotoImage(file = r'C:\Users\Soory\Pictures\Figure_2.png')
 #image1 = ImageTk.PhotoImage(image2)
 
 def click_event():
