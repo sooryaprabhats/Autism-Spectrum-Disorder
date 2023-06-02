@@ -15,7 +15,7 @@ webcam = cv2.VideoCapture(0)
 b=lr=ll=lc=0
 def thread_function():
     global ret
-    cap = cv2.VideoCapture('Funny.mp4')
+    cap = cv2.VideoCapture('Mmm.mp4')
     while(cap.isOpened()):
         ret, frame = cap.read()
         if ret == True:
@@ -68,14 +68,39 @@ def eye_gaze():
         cv2.imshow("Demo", frame)
     
         if cv2.waitKey(1) == 27 or ret == False:
-            with open('Report.csv', 'a', newline='') as file:
+            with open('Report1.csv', 'a', newline='') as file:
                 writer = csv.writer(file)
                 t=b+lr+lc+ll
                 dt=b+lr+ll
                 dp=(dt/t)*100
                 cp=(lc/t)*100
-                r=""
-                print("csv")
+
+                #Start SVM Algorithm
+                from sklearn.svm import SVC
+                import pandas as pd
+                import numpy as np
+                import matplotlib.pyplot as plt
+                from sklearn.metrics import accuracy_score
+                from sklearn.model_selection import train_test_split
+
+                # Loading the dataset
+                df = pd.read_csv(r'Report.csv')
+
+                X = df.drop(columns='Final Report')
+                y = df['Final Report']
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=0)
+
+                svc = SVC() # instantiate classifier with default hyperparameters
+                svc.fit(X_train, y_train)
+                classifier_predictions = svc.predict(X_test)
+                accuracy_value=(accuracy_score(y_test, classifier_predictions) * 100)
+                acc=str(accuracy_value)
+                if cp>=60:
+                    
+                    r="Autism not detected.  Prediction accuracy is "+acc
+                else:
+                    r="Autism detected.   Prediction accuracy is "+acc
+                print(r)
                 writer.writerow([b,lr,ll,lc,t,dp,cp,r])
             break
     
@@ -86,6 +111,3 @@ def eye_gaze():
     
     mylabel = Label(root, text = r, padx = 50, fg="red")
     mylabel.pack(pady=70)
-    
-    
-    
